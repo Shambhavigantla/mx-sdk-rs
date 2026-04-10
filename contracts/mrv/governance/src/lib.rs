@@ -54,7 +54,7 @@ pub trait MrvGovernance {
     #[init]
     fn init(
         &self,
-        initial_signers: MultiValueEncoded<ManagedAddress>,
+        initial_signers: ManagedVec<ManagedAddress>,
         approval_threshold: u32,
         timelock_seconds: u64,
     ) {

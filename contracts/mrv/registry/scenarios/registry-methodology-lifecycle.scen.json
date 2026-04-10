@@ -31,7 +31,7 @@
             "id": "deploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-registry.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-registry.mxsc.json",
                 "arguments": [
                     "address:governance"
                 ],

@@ -27,7 +27,7 @@
             "id": "deploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-registry.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-registry.mxsc.json",
                 "arguments": [
                     "address:governance"
                 ],
@@ -45,7 +45,7 @@
             "comment": "Deploying with zero governance address must revert",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-registry.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-registry.mxsc.json",
                 "arguments": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000"
                 ],

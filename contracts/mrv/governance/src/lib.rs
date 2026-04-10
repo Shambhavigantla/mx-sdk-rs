@@ -5,6 +5,8 @@ multiversx_sc::derive_imports!();
 
 pub use mrv_common::{GsocVerifierEntry, VerifierAccreditation};
 
+pub mod mrv_governance_proxy;
+pub use mrv_governance_proxy::MrvGovernanceProxy;
 /// Proposal type for emergency pause/unpause actions.
 const PROPOSAL_TYPE_PAUSE: u8 = 1;
 /// Proposal type for granting or revoking VVB accreditation.
@@ -54,7 +56,7 @@ pub trait MrvGovernance {
     #[init]
     fn init(
         &self,
-        initial_signers: MultiValueEncoded<ManagedAddress>,
+        initial_signers: ManagedVec<ManagedAddress>,
         approval_threshold: u32,
         timelock_seconds: u64,
     ) {

@@ -31,7 +31,7 @@ fn mrv_governance_executes_emergency_pause_proposal() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);
@@ -96,7 +96,7 @@ fn mrv_governance_tracks_verifier_accreditation_state() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);
@@ -170,7 +170,7 @@ fn mrv_governance_timelock_enforcement_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);
@@ -229,7 +229,7 @@ fn mrv_governance_proposal_expiry_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);
@@ -290,7 +290,7 @@ fn mrv_governance_remove_signer_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             signers.push(SIGNER_THREE.to_managed_address());
@@ -338,7 +338,7 @@ fn mrv_governance_propose_badge_issuance_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);

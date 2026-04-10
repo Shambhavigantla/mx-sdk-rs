@@ -38,10 +38,9 @@
             "id": "deploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-governance.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-governance.mxsc.json",
                 "arguments": [
-                    "address:signer1",
-                    "address:signer2",
+                    ["address:signer1", "address:signer2"],
                     "1",
                     "3600"
                 ],

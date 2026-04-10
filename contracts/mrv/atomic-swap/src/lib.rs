@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod atomic_swap_proxy;
+
 /// Escrowed RFQ lifecycle record tracking margin deposit, settlement, and expiry.
 #[type_abi]
 #[derive(TopEncode, TopDecode, NestedEncode, NestedDecode, ManagedVecItem, Clone, PartialEq, Eq)]

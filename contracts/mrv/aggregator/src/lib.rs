@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod mrv_aggregator_proxy;
+
 /// Maximum number of oracle source types supported by `compute_mrv_root`.
 const MAX_ORACLE_SOURCES: usize = 3;
 

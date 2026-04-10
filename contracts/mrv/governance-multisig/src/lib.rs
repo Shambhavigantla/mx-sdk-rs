@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod governance_multisig_proxy;
+
 const MIN_SIGNERS: usize = 2;
 /// Proposals expire after 48 hours. This is intentionally shorter than the
 /// 30-day window used by `mrv-governance` for timelocked proposals, because

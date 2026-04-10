@@ -1,0 +1,58 @@
+{
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "1",
+                    "balance": "1000000"
+                }
+            }
+        },
+        {
+            "step": "setState",
+            "accounts": {
+                "address:signer1": {
+                    "nonce": "1",
+                    "balance": "1000000"
+                }
+            }
+        },
+        {
+            "step": "setState",
+            "accounts": {
+                "address:signer2": {
+                    "nonce": "1",
+                    "balance": "1000000"
+                }
+            }
+        },
+        {
+            "step": "setState",
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "1",
+                    "newAddress": "sc:mrv-governance"
+                }
+            ]
+        },
+        {
+            "step": "scDeploy",
+            "tx": {
+                "from": "address:owner",
+                "contractCode": "mxsc:mxsc:output/mrv-governance.mxsc.json",
+                "arguments": [
+                    "0x7369676e6572315f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f7369676e6572325f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f",
+                    "0x02",
+                    "0x0e10"
+                ],
+                "gasLimit": "5,000,000"
+            },
+            "expect": {
+                "out": [],
+                "status": "0"
+            }
+        }
+    ]
+}

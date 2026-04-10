@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod carbon_credit_proxy;
+
 use mrv_common::MrvGovernanceModule;
 
 /// IME validation record used to gate dVCU issuance.

@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod buffer_pool_proxy;
+
 use mrv_common::MrvGovernanceModule;
 
 /// Replenishment threshold above which governance approval is required.

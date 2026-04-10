@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod mrv_registry_proxy;
+
 use mrv_common::{MrvReportProof, MrvGovernanceModule};
 
 /// Versioned methodology record with approval lifecycle and supersession tracking.

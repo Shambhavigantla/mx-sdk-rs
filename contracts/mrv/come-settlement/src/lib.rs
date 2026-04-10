@@ -3,6 +3,8 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+pub mod come_settlement_proxy;
+
 /// Maximum lifetime, in rounds, for a funded settlement before it can be expired.
 const MAX_SETTLEMENT_LIFETIME_ROUNDS: u64 = 1_000_000;
 

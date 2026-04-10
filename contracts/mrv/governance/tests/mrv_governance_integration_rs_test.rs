@@ -30,7 +30,7 @@ fn mrv_governance_owner_manages_signers_and_threshold_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             sc.init(signers, 1, 3600);
         });
@@ -69,7 +69,7 @@ fn mrv_governance_requires_quorum_rs() {
         .code(CODE_PATH)
         .new_address(SC_ADDRESS)
         .whitebox(mrv_governance::contract_obj, |sc| {
-            let mut signers = MultiValueEncoded::new();
+            let mut signers: ManagedVec<StaticApi, ManagedAddress<StaticApi>> = ManagedVec::new();
             signers.push(SIGNER_ONE.to_managed_address());
             signers.push(SIGNER_TWO.to_managed_address());
             sc.init(signers, 2, 3600);

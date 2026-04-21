@@ -6,7 +6,7 @@
                 {
                     "creatorAddress": "address:owner",
                     "creatorNonce": "1",
-                    "newAddress": "sc:gsoc_registry_contract"
+                    "newAddress": "sc:income_contract"
                 }
             ]
         },
@@ -14,9 +14,10 @@
             "step": "scDeploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-gsoc-registry.mxsc.json",
+                "contractCode": "mxsc:output/mrv-income-distribution.mxsc.json",
                 "arguments": [
-                    "0x6d6f636b5f676f765f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f"
+                    "0x6d6f636b5f676f765f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f",
+                    "0x434f4d452d313233343536"
                 ],
                 "gasLimit": "5,000,000"
             },
@@ -29,17 +30,25 @@
             "step": "scCall",
             "tx": {
                 "from": "address:owner",
-                "to": "sc:gsoc_registry_contract",
-                "function": "reserveSerial",
+                "to": "sc:income_contract",
+                "esdtValue": [
+                    {
+                        "tokenIdentifier": "0x434f4d452d313233343536",
+                        "value": "50000"
+                    }
+                ],
+                "function": "fundDistribution",
                 "arguments": [
-                    "0x49544d4f2d534e2d39393939"
+                    "0x444953542d303031",
+                    "0x3132333435363738393031323334353637383930313233343536373839303132",
+                    "0x03e8",
+                    "0x697066733a2f2f6d616e6966657374",
+                    "0x2710"
                 ],
                 "gasLimit": "5,000,000"
             },
             "expect": {
-                "out": [
-                    "0x01"
-                ],
+                "out": [],
                 "status": "0"
             }
         }

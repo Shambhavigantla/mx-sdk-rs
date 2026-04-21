@@ -6,7 +6,7 @@
                 {
                     "creatorAddress": "address:owner",
                     "creatorNonce": "1",
-                    "newAddress": "sc:gsoc_registry_contract"
+                    "newAddress": "sc:multisig_contract"
                 }
             ]
         },
@@ -14,9 +14,10 @@
             "step": "scDeploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-gsoc-registry.mxsc.json",
+                "contractCode": "mxsc:output/mrv-governance-multisig.mxsc.json",
                 "arguments": [
-                    "0x6d6f636b5f676f765f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f"
+                    "0x02",
+                    "0x6d6f636b5f7369676e65725f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f"
                 ],
                 "gasLimit": "5,000,000"
             },
@@ -29,17 +30,18 @@
             "step": "scCall",
             "tx": {
                 "from": "address:owner",
-                "to": "sc:gsoc_registry_contract",
-                "function": "reserveSerial",
+                "to": "sc:multisig_contract",
+                "function": "proposeAction",
                 "arguments": [
-                    "0x49544d4f2d534e2d39393939"
+                    "0x50524f502d303031",
+                    "0x667265657a65",
+                    "0x7461726765745f636f6e74726163745f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f",
+                    "0x616374696f6e5f646174615f686578"
                 ],
                 "gasLimit": "5,000,000"
             },
             "expect": {
-                "out": [
-                    "0x01"
-                ],
+                "out": [],
                 "status": "0"
             }
         }

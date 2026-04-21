@@ -77,20 +77,24 @@ impl ScenarioWorld {
         }
     }
 
-    /// Runs a scenario file (`.scen.json`) with the configured backend.
+    /// Runs a scenario file (`.scen.json`) with the configured backend and
+    /// returns the world back so the caller can continue working with it
+    /// (for example to write the generated trace).
     ///
     /// Will crash and produce an output if the test failed for any reason.
-    pub fn run<P: AsRef<Path>>(self, relative_path: P) {
+    pub fn run<P: AsRef<Path>>(mut self, relative_path: P) -> Self {
         let mut absolute_path = self.current_dir.clone();
         absolute_path.push(relative_path);
-        match self.backend {
-            Backend::Debugger(mut debugger) => {
+        match &mut self.backend {
+            Backend::Debugger(debugger) => {
                 debugger.run_scenario_file(&absolute_path);
             }
             Backend::VmGoBackend => {
                 run_mx_scenario_go(&absolute_path);
             }
         }
+
+        self
     }
 
     pub(crate) fn get_debugger_backend(&self) -> &DebuggerBackend {

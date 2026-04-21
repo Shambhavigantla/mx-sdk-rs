@@ -12,5 +12,5 @@ fn world() -> ScenarioWorld {
 
 #[test]
 fn gsoc_registry_lifecycle_rs() {
-    world().run("scenarios/gsoc-registry-lifecycle.scen.json");
+    world().run("scenarios/gsoc-registry-lifecycle1.scen.json");
 }

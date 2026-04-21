@@ -15,9 +15,9 @@ fn generate_gsoc_registry_trace() {
     let contract = TestSCAddress::new("gsoc_registry_contract");
     let mock_gov = TestAddress::new("mock_gov");
 
+      world.start_trace();
     world.account(owner).nonce(1).balance(1_000_000u64);
 
-    world.start_trace();
 
     world.tx().from(owner).raw_deploy()
         .argument(&mock_gov.to_address())

@@ -2,6 +2,15 @@
     "steps": [
         {
             "step": "setState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "1",
+                    "balance": "1000000"
+                }
+            }
+        },
+        {
+            "step": "setState",
             "newAddresses": [
                 {
                     "creatorAddress": "address:owner",

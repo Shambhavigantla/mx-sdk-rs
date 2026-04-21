@@ -12,5 +12,5 @@ fn world() -> ScenarioWorld {
 
 #[test]
 fn reserve_proof_lifecycle_rs() {
-    world().run("scenarios/reserve-proof-lifecycle.scen.json");
+    world().run("scenarios/reserve-proof-lifecycle1.scen.json");
 }

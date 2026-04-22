@@ -1,0 +1,42 @@
+{
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:owner": {}
+            },
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:rust-testing-framework-tester"
+                }
+            ]
+        },
+        {
+            "step": "setState",
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:rust-testing-framework-tester"
+                }
+            ]
+        },
+        {
+            "step": "scDeploy",
+            "tx": {
+                "from": "address:owner",
+                "contractCode": "mxsc:output/rust-testing-framework-tester.mxsc.json",
+                "arguments": [],
+                "gasLimit": "5,000,000"
+            },
+            "expect": {
+                "out": [
+                    "0x636f6e7374727563746f722d726573756c74"
+                ],
+                "status": "0"
+            }
+        }
+    ]
+}

@@ -282,4 +282,5 @@ pub const EI_1_5_NAMES: &[&str] = &[
     "managedVerifySecp256r1",
     "managedVerifyBLSSignatureShare",
     "managedVerifyBLSAggregatedSignature",
+    "managedDRWASyncMirror",
 ];

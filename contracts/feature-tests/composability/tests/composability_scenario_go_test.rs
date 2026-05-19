@@ -75,6 +75,11 @@ fn forw_blind_deploy_go() {
 }
 
 #[test]
+fn forw_blind_drain_go() {
+    world().run("scenarios/forw_blind_drain.scen.json");
+}
+
+#[test]
 fn forw_blind_sync_accept_egld_go() {
     world().run("scenarios/forw_blind_sync_accept_egld.scen.json");
 }
@@ -112,11 +117,6 @@ fn forw_blind_transf_exec_accept_egld_go() {
 #[test]
 fn forw_blind_upgrade_go() {
     world().run("scenarios/forw_blind_upgrade.scen.json");
-}
-
-#[test]
-fn forw_queue_async_go() {
-    world().run("scenarios/forw_queue_async.scen.json");
 }
 
 #[test]

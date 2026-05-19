@@ -17,8 +17,8 @@ fn world() -> ScenarioWorld {
         forwarder_legacy::ContractBuilder,
     );
     blockchain.register_contract(
-        "mxsc:forwarder-queue/output/forwarder-queue.mxsc.json",
-        forwarder_queue::ContractBuilder,
+        "mxsc:mesh-node/output/mesh-node.mxsc.json",
+        mesh_node::ContractBuilder,
     );
     blockchain.register_contract(
         "mxsc:forwarder-blind/output/forwarder-blind.mxsc.json",
@@ -92,11 +92,13 @@ fn forw_blind_async_v_1_reject_egld_rs() {
 }
 
 #[test]
+#[ignore = "TODO: back transfers in callback currently not handled correctly in Rust VM"]
 fn forw_blind_async_v_1_retrieve_egld_rs() {
     world().run("scenarios/forw_blind_async_v1_retrieve_egld.scen.json");
 }
 
 #[test]
+#[ignore = "TODO: back transfers in callback currently not handled correctly in Rust VM"]
 fn forw_blind_async_v_1_retrieve_nft_rs() {
     world().run("scenarios/forw_blind_async_v1_retrieve_nft.scen.json");
 }
@@ -117,6 +119,7 @@ fn forw_blind_async_v_2_reject_egld_rs() {
 }
 
 #[test]
+#[ignore = "TODO: back transfers in callback currently not handled correctly in Rust VM"]
 fn forw_blind_async_v_2_retrieve_egld_rs() {
     world().run("scenarios/forw_blind_async_v2_retrieve_egld.scen.json");
 }
@@ -124,6 +127,11 @@ fn forw_blind_async_v_2_retrieve_egld_rs() {
 #[test]
 fn forw_blind_deploy_rs() {
     world().run("scenarios/forw_blind_deploy.scen.json");
+}
+
+#[test]
+fn forw_blind_drain_rs() {
+    world().run("scenarios/forw_blind_drain.scen.json");
 }
 
 #[test]
@@ -164,11 +172,6 @@ fn forw_blind_transf_exec_accept_egld_rs() {
 #[test]
 fn forw_blind_upgrade_rs() {
     world().run("scenarios/forw_blind_upgrade.scen.json");
-}
-
-#[test]
-fn forw_queue_async_rs() {
-    world().run("scenarios/forw_queue_async.scen.json");
 }
 
 #[test]

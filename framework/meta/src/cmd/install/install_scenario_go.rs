@@ -30,6 +30,7 @@ pub struct ScenarioGoRelease {
 #[derive(Clone, Debug)]
 pub struct ScenarioGoInstaller {
     tag: Option<String>,
+    local_path: Option<PathBuf>,
     zip_name: String,
     user_agent: String,
     temp_dir_path: PathBuf,
@@ -44,11 +45,12 @@ fn select_zip_name() -> String {
 }
 
 impl ScenarioGoInstaller {
-    pub fn new(tag: Option<String>) -> Self {
+   pub fn new(tag: Option<String>, local_path: Option<PathBuf>) -> Self {
         let cargo_home = PathBuf::from(CARGO_HOME);
         let cargo_bin_folder = cargo_home.join("bin");
         ScenarioGoInstaller {
             tag,
+            local_path,
             zip_name: select_zip_name(),
             user_agent: USER_AGENT.to_string(),
             temp_dir_path: std::env::temp_dir(),
@@ -57,6 +59,11 @@ impl ScenarioGoInstaller {
     }
 
     pub async fn install(&self) {
+        if self.local_path.is_some() {
+            self.build_and_install_locally();
+            return;
+        }
+
         let release_raw = self
             .get_scenario_go_release_json()
             .await
@@ -76,6 +83,25 @@ impl ScenarioGoInstaller {
         self.delete_temp_zip();
     }
 
+     fn build_and_install_locally(&self) {
+        let local_path = self.local_path.as_ref().unwrap();
+        println_green(format!(
+            "Building and installing from: {}",
+            local_path.display()
+        ));
+
+        let output = std::process::Command::new("go")
+            .arg("install")
+            .arg("./...")
+            .current_dir(local_path)
+            .env("GOBIN", &self.cargo_bin_folder)
+            .status()
+            .expect("failed to execute go install");
+
+        if !output.success() {
+            panic!("go install failed");
+        }
+    }
     fn release_url(&self) -> String {
         if let Some(tag) = &self.tag {
             format!("{SCENARIO_CLI_RELEASES_BASE_URL}/tags/{tag}")

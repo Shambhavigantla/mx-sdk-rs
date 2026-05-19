@@ -1,0 +1,229 @@
+{
+    "name": "drwa auth admin add/remove signer flow",
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer1": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer2": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer3": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer4": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer5": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                },
+                "address:signer6": {
+                    "nonce": "0",
+                    "balance": "1,000,000"
+                }
+            },
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:drwa_auth_admin"
+                }
+            ],
+            "currentBlockInfo": {
+                "blockRound": "1"
+            }
+        },
+        {
+            "step": "scDeploy",
+            "id": "deploy",
+            "tx": {
+                "from": "address:owner",
+                "contractCode": "mxsc:../output/drwa-auth-admin.mxsc.json",
+                "arguments": [
+                    "3",
+                    "100000",
+                    "address:signer1",
+                    "address:signer2",
+                    "address:signer3",
+                    "address:signer4",
+                    "address:signer5"
+                ],
+                "gasLimit": "80,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "propose-add-signer",
+            "tx": {
+                "from": "address:signer1",
+                "to": "sc:drwa_auth_admin",
+                "function": "proposeAddSigner",
+                "arguments": ["address:signer6"],
+                "gasLimit": "80,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": ["1"],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "sign-add-signer-2",
+            "tx": {
+                "from": "address:signer2",
+                "to": "sc:drwa_auth_admin",
+                "function": "sign",
+                "arguments": ["1"],
+                "gasLimit": "50,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "sign-add-signer-3",
+            "tx": {
+                "from": "address:signer3",
+                "to": "sc:drwa_auth_admin",
+                "function": "sign",
+                "arguments": ["1"],
+                "gasLimit": "50,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "setState",
+            "currentBlockInfo": {
+                "blockRound": "14402"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "perform-add-signer",
+            "tx": {
+                "from": "address:signer1",
+                "to": "sc:drwa_auth_admin",
+                "function": "performAction",
+                "arguments": ["1"],
+                "gasLimit": "80,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "propose-remove-signer",
+            "tx": {
+                "from": "address:signer1",
+                "to": "sc:drwa_auth_admin",
+                "function": "proposeRemoveSigner",
+                "arguments": ["address:signer6"],
+                "gasLimit": "80,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": ["2"],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "sign-remove-signer-2",
+            "tx": {
+                "from": "address:signer2",
+                "to": "sc:drwa_auth_admin",
+                "function": "sign",
+                "arguments": ["2"],
+                "gasLimit": "50,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "sign-remove-signer-3",
+            "tx": {
+                "from": "address:signer3",
+                "to": "sc:drwa_auth_admin",
+                "function": "sign",
+                "arguments": ["2"],
+                "gasLimit": "50,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": [],
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "setState",
+            "currentBlockInfo": {
+                "blockRound": "28803"
+            }
+        },
+        {
+            "step": "scCall",
+            "id": "perform-remove-signer",
+            "tx": {
+                "from": "address:signer1",
+                "to": "sc:drwa_auth_admin",
+                "function": "performAction",
+                "arguments": ["2"],
+                "gasLimit": "80,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "status": "0",
+                "out": "*",
+                "gas": "*",
+                "refund": "*"
+            }
+        }
+    ]
+}

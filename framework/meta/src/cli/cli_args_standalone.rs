@@ -481,6 +481,10 @@ pub struct InstallMxScenarioGoArgs {
     /// The framework version on which the contracts should be created.
     #[arg(long, verbatim_doc_comment)]
     pub tag: Option<String>,
+    /// Local path to the mx-chain-scenario-cli-go repository.
+    /// If specified, it will build and install from this path instead of downloading from GitHub.
+    #[arg(long, verbatim_doc_comment)]
+    pub path: Option<PathBuf>,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Debug, Args)]

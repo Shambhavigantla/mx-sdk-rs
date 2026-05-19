@@ -30,7 +30,7 @@ pub async fn install(args: &InstallArgs) {
 }
 
 async fn install_scenario_go(sg_args: &InstallMxScenarioGoArgs) {
-    ScenarioGoInstaller::new(sg_args.tag.clone())
+    ScenarioGoInstaller::new(sg_args.tag.clone(), sg_args.path.clone())
         .install()
         .await;
 }

@@ -27,6 +27,13 @@
                     "creatorNonce": "0",
                     "newAddress": "sc:drwa_identity_registry"
                 }
+            ],
+            "authorizedDRWASyncCallers": [
+                "sc:drwa_policy_registry",
+                "sc:drwa_asset_manager",
+                "sc:drwa_identity_registry",
+                "sc:drwa_attestation",
+                "sc:drwa_auth_admin"
             ]
         },
         {
@@ -105,7 +112,9 @@
                 "arguments": []
             },
             "expect": {
-                "out": ["address:governance"],
+                "out": [
+                    "address:governance"
+                ],
                 "status": "0"
             }
         },

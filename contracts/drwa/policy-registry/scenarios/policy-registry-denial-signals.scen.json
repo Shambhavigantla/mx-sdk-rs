@@ -20,6 +20,13 @@
                     "creatorNonce": "0",
                     "newAddress": "sc:drwa_policy_registry"
                 }
+            ],
+            "authorizedDRWASyncCallers": [
+                "sc:drwa_policy_registry",
+                "sc:drwa_asset_manager",
+                "sc:drwa_identity_registry",
+                "sc:drwa_attestation",
+                "sc:drwa_auth_admin"
             ]
         },
         {
@@ -28,7 +35,9 @@
             "tx": {
                 "from": "address:owner",
                 "contractCode": "mxsc:../output/drwa-policy-registry.mxsc.json",
-                "arguments": ["address:owner"],
+                "arguments": [
+                    "address:owner"
+                ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
             },
@@ -126,10 +135,14 @@
             "tx": {
                 "to": "sc:drwa_policy_registry",
                 "function": "getTokenPolicyVersion",
-                "arguments": ["str:CARBON-a11001"]
+                "arguments": [
+                    "str:CARBON-a11001"
+                ]
             },
             "expect": {
-                "out": ["1"],
+                "out": [
+                    "1"
+                ],
                 "status": "0"
             }
         },
@@ -139,10 +152,14 @@
             "tx": {
                 "to": "sc:drwa_policy_registry",
                 "function": "getTokenPolicyVersion",
-                "arguments": ["str:CARBON-bc23de"]
+                "arguments": [
+                    "str:CARBON-bc23de"
+                ]
             },
             "expect": {
-                "out": ["1"],
+                "out": [
+                    "1"
+                ],
                 "status": "0"
             }
         },
@@ -152,10 +169,14 @@
             "tx": {
                 "to": "sc:drwa_policy_registry",
                 "function": "getTokenPolicyVersion",
-                "arguments": ["str:CARBON-be7a01"]
+                "arguments": [
+                    "str:CARBON-be7a01"
+                ]
             },
             "expect": {
-                "out": ["1"],
+                "out": [
+                    "1"
+                ],
                 "status": "0"
             }
         },

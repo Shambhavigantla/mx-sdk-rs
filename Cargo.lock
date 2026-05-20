@@ -3480,6 +3480,7 @@ dependencies = [
 [[package]]
 name = "multiversx-chain-vm-executor"
 version = "0.5.1"
+source = "git+https://github.com/Shanmugavardhan/mx-vm-executor-rs?rev=69167eb16e3ed3874e77b48df29daa9acb5c8b25#69167eb16e3ed3874e77b48df29daa9acb5c8b25"
 dependencies = [
  "serde",
 ]
@@ -3487,6 +3488,7 @@ dependencies = [
 [[package]]
 name = "multiversx-chain-vm-executor-wasmer-experimental"
 version = "0.5.1"
+source = "git+https://github.com/Shanmugavardhan/mx-vm-executor-rs?rev=69167eb16e3ed3874e77b48df29daa9acb5c8b25#69167eb16e3ed3874e77b48df29daa9acb5c8b25"
 dependencies = [
  "log",
  "loupe",

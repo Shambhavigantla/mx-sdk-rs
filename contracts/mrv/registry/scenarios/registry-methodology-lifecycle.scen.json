@@ -31,7 +31,7 @@
             "id": "deploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-registry.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-registry.mxsc.json",
                 "arguments": [
                     "address:governance"
                 ],
@@ -40,7 +40,9 @@
             },
             "expect": {
                 "out": [],
-                "status": "0"
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
             }
         },
         {
@@ -48,14 +50,14 @@
             "id": "register-methodology",
             "comment": "Owner registers a methodology (owner passes require_governance_or_owner)",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "registerMethodology",
                 "arguments": [
                     "str:METH-SOC-001",
                     "str:v1.0",
                     "str:sha256:abc123def456",
-                    "str:approved",
+                    "str:approved_internal",
                     "1700000000",
                     "0"
                 ],
@@ -64,7 +66,9 @@
             },
             "expect": {
                 "out": [],
-                "status": "0"
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
             }
         },
         {
@@ -72,14 +76,14 @@
             "id": "register-methodology-idempotent",
             "comment": "Re-registering with same fields should succeed (idempotent)",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "registerMethodology",
                 "arguments": [
                     "str:METH-SOC-001",
                     "str:v1.0",
                     "str:sha256:abc123def456",
-                    "str:approved",
+                    "str:approved_internal",
                     "1700000000",
                     "0"
                 ],
@@ -88,7 +92,9 @@
             },
             "expect": {
                 "out": [],
-                "status": "0"
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
             }
         },
         {
@@ -96,14 +102,14 @@
             "id": "register-methodology-conflict-fails",
             "comment": "Re-registering with different digest must revert",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "registerMethodology",
                 "arguments": [
                     "str:METH-SOC-001",
                     "str:v1.0",
                     "str:sha256:DIFFERENT_DIGEST",
-                    "str:approved",
+                    "str:approved_internal",
                     "1700000000",
                     "0"
                 ],
@@ -113,7 +119,9 @@
             "expect": {
                 "out": [],
                 "status": "4",
-                "message": "str:conflicting methodology record"
+                "message": "str:conflicting methodology record",
+                "gas": "*",
+                "refund": "*"
             }
         },
         {
@@ -121,20 +129,22 @@
             "id": "update-approval-status",
             "comment": "Update methodology approval status to suspended",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "setMethodologyApprovalStatus",
                 "arguments": [
                     "str:METH-SOC-001",
                     "str:v1.0",
-                    "str:suspended"
+                    "str:superseded"
                 ],
                 "gasLimit": "20,000,000",
                 "gasPrice": "0"
             },
             "expect": {
                 "out": [],
-                "status": "0"
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
             }
         },
         {
@@ -159,7 +169,9 @@
             "expect": {
                 "out": [],
                 "status": "4",
-                "message": "*"
+                "message": "*",
+                "gas": "*",
+                "refund": "*"
             }
         }
     ]

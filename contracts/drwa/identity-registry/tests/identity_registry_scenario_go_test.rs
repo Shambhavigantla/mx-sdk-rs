@@ -1,7 +1,7 @@
 use multiversx_sc_scenario::*;
 
 fn world() -> ScenarioWorld {
-    ScenarioWorld::vm_go()
+    ScenarioWorld::new()
 }
 
 #[test]

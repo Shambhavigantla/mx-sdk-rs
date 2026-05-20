@@ -228,8 +228,8 @@ fn identity_registry_blackbox_governance_handoff() {
         .query()
         .to(SC_ADDRESS)
         .typed(drwa_identity_registry::drwa_identity_registry_proxy::DrwaIdentityRegistryProxy)
-        .pending_governance()
-        .returns(ExpectValue(NEW_GOVERNANCE.to_managed_address()))
+        .get_pending_governance()
+        .returns(ExpectValue(Some(NEW_GOVERNANCE.to_managed_address())))
         .run();
 
     // New governance accepts

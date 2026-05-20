@@ -17,7 +17,7 @@
                 {
                     "creatorAddress": "address:owner",
                     "creatorNonce": "0",
-                    "newAddress": "sc:mrv_income_distribution"
+                    "newAddress": "sc:mrv_income_dist"
                 }
             ]
         },
@@ -46,12 +46,14 @@
             "id": "query-pending-governance-empty",
             "comment": "No governance transfer proposed — pendingGovernance should be empty",
             "tx": {
-                "to": "sc:mrv_income_distribution",
+                "to": "sc:mrv_income_dist",
                 "function": "getPendingGovernance",
                 "arguments": []
             },
             "expect": {
-                "out": []
+                "out": [
+                    ""
+                ]
             }
         },
         {
@@ -59,7 +61,7 @@
             "id": "query-nonexistent-distribution",
             "comment": "Querying a non-existent distribution returns OptionalValue::None (empty output)",
             "tx": {
-                "to": "sc:mrv_income_distribution",
+                "to": "sc:mrv_income_dist",
                 "function": "getDistribution",
                 "arguments": [
                     "str:DIST-999"
@@ -74,7 +76,7 @@
             "id": "query-is-claimed-false",
             "comment": "No claims made — isClaimed returns false (empty/zero)",
             "tx": {
-                "to": "sc:mrv_income_distribution",
+                "to": "sc:mrv_income_dist",
                 "function": "isClaimed",
                 "arguments": [
                     "str:DIST-001",

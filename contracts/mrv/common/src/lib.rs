@@ -117,6 +117,14 @@ pub trait MrvGovernanceModule {
     fn governance(&self) -> SingleValueMapper<ManagedAddress>;
 
     #[view(getPendingGovernance)]
+    fn get_pending_governance(&self) -> Option<ManagedAddress> {
+        if self.pending_governance().is_empty() {
+            None
+        } else {
+            Some(self.pending_governance().get())
+        }
+    }
+
     #[storage_mapper("pendingGovernance")]
     fn pending_governance(&self) -> SingleValueMapper<ManagedAddress>;
 

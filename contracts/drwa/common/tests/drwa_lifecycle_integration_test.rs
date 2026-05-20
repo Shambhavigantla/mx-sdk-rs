@@ -194,7 +194,7 @@ fn drwa_full_lifecycle_four_contracts() {
         .run();
 
     // Verify identity was registered with pending KYC/AML
-    let identity: drwa_identity_registry::IdentityRecord<StaticApi> = world
+    let identity: drwa_identity_registry::drwa_identity_registry_proxy::IdentityRecord<StaticApi> = world
         .query()
         .to(IDENTITY_SC)
         .typed(DrwaIdentityRegistryProxy)
@@ -238,7 +238,7 @@ fn drwa_full_lifecycle_four_contracts() {
         .run();
 
     // Verify updated compliance status
-    let identity_updated: drwa_identity_registry::IdentityRecord<StaticApi> = world
+    let identity_updated: drwa_identity_registry::drwa_identity_registry_proxy::IdentityRecord<StaticApi> = world
         .query()
         .to(IDENTITY_SC)
         .typed(DrwaIdentityRegistryProxy)
@@ -606,7 +606,7 @@ fn drwa_lifecycle_deactivation_flow() {
         .deactivate_identity(HOLDER.to_managed_address())
         .run();
 
-    let identity: drwa_identity_registry::IdentityRecord<StaticApi> = world
+    let identity: drwa_identity_registry::drwa_identity_registry_proxy::IdentityRecord<StaticApi> = world
         .query()
         .to(IDENTITY_SC)
         .typed(DrwaIdentityRegistryProxy)

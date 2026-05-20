@@ -45,7 +45,7 @@
             "id": "anchor-dvcu-proof",
             "comment": "VM0042 dVCU reserve proof at block 100",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:reserve_proof",
                 "function": "anchorReserveProof",
                 "arguments": [
@@ -71,7 +71,7 @@
             "id": "anchor-dvcu-proof-block-200",
             "comment": "Second VM0042 proof at block 200 — monotonic increment",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:reserve_proof",
                 "function": "anchorReserveProof",
                 "arguments": [
@@ -97,7 +97,7 @@
             "id": "monotonic-block-guard",
             "comment": "Backward block (100) should fail — snapshot_block must increment",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:reserve_proof",
                 "function": "anchorReserveProof",
                 "arguments": [
@@ -123,7 +123,7 @@
             "id": "anchor-gsoc-proof",
             "comment": "GSOC dGSC reserve proof for a separate project",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:reserve_proof",
                 "function": "anchorGsocReserveProof",
                 "arguments": [

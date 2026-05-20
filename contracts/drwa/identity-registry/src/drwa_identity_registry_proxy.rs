@@ -7,8 +7,6 @@
 #![allow(dead_code)]
 #![allow(clippy::all)]
 
-use crate::{IdentityPrivacyCommitment, IdentityRecord};
-use drwa_common::DrwaSyncEnvelope;
 use multiversx_sc::proxy_imports::*;
 
 pub struct DrwaIdentityRegistryProxy;
@@ -45,6 +43,7 @@ where
     From: TxFrom<Env>,
     Gas: TxGas<Env>,
 {
+    /// Initializes the contract with the governance address. 
     pub fn init<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
@@ -68,6 +67,7 @@ where
     To: TxTo<Env>,
     Gas: TxGas<Env>,
 {
+    /// Upgrades storage layout version if needed and preserves existing state. 
     pub fn upgrade(
         self,
     ) -> TxTypedUpgrade<Env, From, To, NotPayable, Gas, ()> {
@@ -76,7 +76,23 @@ where
             .raw_upgrade()
             .original_result()
     }
+}
 
+#[rustfmt::skip]
+impl<Env, From, To, Gas> DrwaIdentityRegistryProxyMethods<Env, From, To, Gas>
+where
+    Env: TxEnv,
+    Env::Api: VMApi,
+    From: TxFrom<Env>,
+    To: TxTo<Env>,
+    Gas: TxGas<Env>,
+{
+    /// Registers a new identity for `subject`. 
+    ///  
+    /// Sets both KYC and AML status to `"pending"` and sets the initial expiry 
+    /// round to the current block round plus `DEFAULT_IDENTITY_VALIDITY_ROUNDS`. 
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if `subject` is the zero address or an identity already exists. 
     pub fn register_identity<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
         Arg1: ProxyArg<ManagedBuffer<Env::Api>>,
@@ -90,7 +106,7 @@ where
         jurisdiction_code: Arg2,
         registration_number: Arg3,
         entity_type: Arg4,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("registerIdentity")
@@ -102,6 +118,12 @@ where
             .original_result()
     }
 
+    /// Registers an identity using only a 32-byte off-chain identity 
+    /// commitment instead of raw legal name / registration-number payloads. 
+    ///  
+    /// This is the forward-safe path for new DRWA deployments. It preserves 
+    /// the existing holder-profile sync semantics while leaving historical 
+    /// raw-PII records to a separate migration/disclosure process. 
     pub fn register_identity_commitment<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
         Arg1: ProxyArg<ManagedBuffer<Env::Api>>,
@@ -113,7 +135,7 @@ where
         identity_ref_hash: Arg1,
         jurisdiction_code: Arg2,
         entity_type: Arg3,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("registerIdentityCommitment")
@@ -124,6 +146,13 @@ where
             .original_result()
     }
 
+    /// Updates the compliance fields for an existing identity and syncs the 
+    /// holder profile to the native mirror. 
+    ///  
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if the subject is missing, `expiry_round` is in the past 
+    /// unless it is `0`, or `expiry_round` exceeds the configured maximum 
+    /// validity window. 
     pub fn update_compliance_status<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
         Arg1: ProxyArg<ManagedBuffer<Env::Api>>,
@@ -137,7 +166,7 @@ where
         aml_status: Arg2,
         investor_class: Arg3,
         expiry_round: Arg4,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("updateComplianceStatus")
@@ -149,12 +178,19 @@ where
             .original_result()
     }
 
+    /// Deactivates an existing identity by setting both KYC and AML status to 
+    /// `"deactivated"`, incrementing the holder profile version, and syncing 
+    /// the change to the native mirror. 
+    ///  
+    /// This preserves the audit trail (the record is not deleted). 
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if the identity does not exist or `subject` is the zero address. 
     pub fn deactivate_identity<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
         self,
         subject: Arg0,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("deactivateIdentity")
@@ -162,6 +198,35 @@ where
             .original_result()
     }
 
+    /// GDPR right-to-erasure endpoint. 
+    ///  
+    /// Zeros all PII fields (legal_name, registration_number, entity_type, 
+    /// investor_class) while preserving the address reference and setting 
+    /// jurisdiction_code to "ERASED". Both KYC and AML status are set to 
+    /// "deactivated" to prevent the erased identity from passing compliance 
+    /// checks. The holder profile is synced to the native mirror so the 
+    /// enforcement gate sees the deactivated status immediately. 
+    ///  
+    /// Unlike `deactivateIdentity`, this endpoint is specifically for GDPR 
+    /// Article 17 compliance — it removes personal data while maintaining 
+    /// the minimum audit trail required by the regulation. 
+    ///  
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if the identity does not exist or `subject` is the zero address. 
+    pub fn erase_identity<
+        Arg0: ProxyArg<ManagedAddress<Env::Api>>,
+    >(
+        self,
+        subject: Arg0,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("eraseIdentity")
+            .argument(&subject)
+            .original_result()
+    }
+
+    /// Maps a holder address to its identity record. 
     pub fn identity<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
@@ -175,6 +240,7 @@ where
             .original_result()
     }
 
+    /// Maps a holder address to its privacy-preserving identity commitment. 
     pub fn identity_privacy_commitment<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
@@ -188,6 +254,38 @@ where
             .original_result()
     }
 
+    /// Updates the identity validity configuration. 
+    ///  
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if `default_rounds` is zero, `max_rounds` is less than 
+    /// `default_rounds`, or `max_rounds` exceeds the hard cap of 1,000,000. 
+    pub fn set_validity_config<
+        Arg0: ProxyArg<u64>,
+        Arg1: ProxyArg<u64>,
+    >(
+        self,
+        default_rounds: Arg0,
+        max_rounds: Arg1,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("setValidityConfig")
+            .argument(&default_rounds)
+            .argument(&max_rounds)
+            .original_result()
+    }
+
+    /// Storage layout version for forward-compatible upgrades. 
+    pub fn storage_version(
+        self,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, u32> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("getStorageVersion")
+            .original_result()
+    }
+
+    /// Proposes a new governance address and starts the acceptance window. 
     pub fn set_governance<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
@@ -201,6 +299,8 @@ where
             .original_result()
     }
 
+    /// Accepts a pending governance transfer before the acceptance window 
+    /// expires. 
     pub fn accept_governance(
         self,
     ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
@@ -210,6 +310,9 @@ where
             .original_result()
     }
 
+    /// Revokes the current governance address, clearing all governance and 
+    /// pending governance state. Once governance is configured, only that 
+    /// governance address may call this endpoint. 
     pub fn revoke_governance(
         self,
     ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
@@ -219,6 +322,7 @@ where
             .original_result()
     }
 
+    /// The active governance address authorized to manage compliance state. 
     pub fn governance(
         self,
     ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedAddress<Env::Api>> {
@@ -228,12 +332,41 @@ where
             .original_result()
     }
 
-    pub fn pending_governance(
+    /// The proposed governance address awaiting acceptance. 
+    pub fn get_pending_governance(
         self,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedAddress<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, Option<ManagedAddress<Env::Api>>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("getPendingGovernance")
             .original_result()
     }
+}
+
+#[type_abi]
+#[derive(TopEncode, TopDecode, NestedEncode, NestedDecode, ManagedVecItem, Clone, PartialEq, Eq)]
+pub struct IdentityRecord<Api>
+where
+    Api: ManagedTypeApi,
+{
+    pub subject: ManagedAddress<Api>,
+    pub legal_name: ManagedBuffer<Api>,
+    pub jurisdiction_code: ManagedBuffer<Api>,
+    pub registration_number: ManagedBuffer<Api>,
+    pub entity_type: ManagedBuffer<Api>,
+    pub kyc_status: ManagedBuffer<Api>,
+    pub aml_status: ManagedBuffer<Api>,
+    pub investor_class: ManagedBuffer<Api>,
+    pub expiry_round: u64,
+}
+
+#[type_abi]
+#[derive(TopEncode, TopDecode, NestedEncode, NestedDecode, ManagedVecItem, Clone, PartialEq, Eq)]
+pub struct IdentityPrivacyCommitment<Api>
+where
+    Api: ManagedTypeApi,
+{
+    pub subject: ManagedAddress<Api>,
+    pub identity_ref_hash: ManagedBuffer<Api>,
+    pub committed_round: u64,
 }

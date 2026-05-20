@@ -107,7 +107,9 @@
                 "arguments": []
             },
             "expect": {
-                "out": []
+                "out": [
+                    ""
+                ]
             }
         },
         {

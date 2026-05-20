@@ -42,7 +42,14 @@
             ],
             "currentBlockInfo": {
                 "blockRound": "1"
-            }
+            },
+            "authorizedDRWASyncCallers": [
+                "sc:drwa_policy_registry",
+                "sc:drwa_asset_manager",
+                "sc:drwa_identity_registry",
+                "sc:drwa_attestation",
+                "sc:drwa_auth_admin"
+            ]
         },
         {
             "step": "scDeploy",
@@ -107,7 +114,9 @@
             },
             "expect": {
                 "status": "0",
-                "out": ["1"],
+                "out": [
+                    "1"
+                ],
                 "gas": "*",
                 "refund": "*"
             }
@@ -119,7 +128,9 @@
                 "from": "address:signer1",
                 "to": "sc:drwa_auth_admin",
                 "function": "performAction",
-                "arguments": ["1"],
+                "arguments": [
+                    "1"
+                ],
                 "gasLimit": "80,000,000",
                 "gasPrice": "0"
             },
@@ -144,7 +155,9 @@
                 "from": "address:signer2",
                 "to": "sc:drwa_auth_admin",
                 "function": "sign",
-                "arguments": ["1"],
+                "arguments": [
+                    "1"
+                ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
             },
@@ -162,7 +175,9 @@
                 "from": "address:signer1",
                 "to": "sc:drwa_auth_admin",
                 "function": "performAction",
-                "arguments": ["1"],
+                "arguments": [
+                    "1"
+                ],
                 "gasLimit": "80,000,000",
                 "gasPrice": "0"
             },

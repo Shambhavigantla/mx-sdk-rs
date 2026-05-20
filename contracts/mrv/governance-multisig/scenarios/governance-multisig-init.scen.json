@@ -25,7 +25,7 @@
                 {
                     "creatorAddress": "address:owner",
                     "creatorNonce": "0",
-                    "newAddress": "sc:mrv_governance_multisig"
+                    "newAddress": "sc:mrv_governance_msig"
                 }
             ]
         },
@@ -55,7 +55,7 @@
             "id": "add-signer1",
             "tx": {
                 "from": "address:owner",
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "addSigner",
                 "arguments": [
                     "address:signer1"
@@ -75,7 +75,7 @@
             "id": "add-signer2",
             "tx": {
                 "from": "address:owner",
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "addSigner",
                 "arguments": [
                     "address:signer2"
@@ -95,7 +95,7 @@
             "id": "propose-action",
             "tx": {
                 "from": "address:signer1",
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "proposeAction",
                 "arguments": [
                     "str:PROP-001",
@@ -118,7 +118,7 @@
             "id": "query-is-signer1",
             "comment": "signer1 was added — isSigner should return true",
             "tx": {
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "isSigner",
                 "arguments": [
                     "address:signer1"
@@ -135,7 +135,7 @@
             "id": "query-is-signer2",
             "comment": "signer2 was added — isSigner should return true",
             "tx": {
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "isSigner",
                 "arguments": [
                     "address:signer2"
@@ -152,7 +152,7 @@
             "id": "query-is-signer-owner",
             "comment": "Owner is auto-added as signer in init",
             "tx": {
-                "to": "sc:mrv_governance_multisig",
+                "to": "sc:mrv_governance_msig",
                 "function": "isSigner",
                 "arguments": [
                     "address:owner"

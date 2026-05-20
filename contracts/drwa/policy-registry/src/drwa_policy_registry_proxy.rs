@@ -7,7 +7,6 @@
 #![allow(dead_code)]
 #![allow(clippy::all)]
 
-use drwa_common::{DrwaSyncEnvelope, DrwaTokenPolicy};
 use multiversx_sc::proxy_imports::*;
 
 pub struct DrwaPolicyRegistryProxy;
@@ -44,6 +43,7 @@ where
     From: TxFrom<Env>,
     Gas: TxGas<Env>,
 {
+    /// Initializes the contract with the governance address. 
     pub fn init<
         Arg0: ProxyArg<ManagedAddress<Env::Api>>,
     >(
@@ -67,6 +67,7 @@ where
     To: TxTo<Env>,
     Gas: TxGas<Env>,
 {
+    /// Upgrades storage layout version if needed and preserves existing state. 
     pub fn upgrade(
         self,
     ) -> TxTypedUpgrade<Env, From, To, NotPayable, Gas, ()> {
@@ -75,7 +76,23 @@ where
             .raw_upgrade()
             .original_result()
     }
+}
 
+#[rustfmt::skip]
+impl<Env, From, To, Gas> DrwaPolicyRegistryProxyMethods<Env, From, To, Gas>
+where
+    Env: TxEnv,
+    Env::Api: VMApi,
+    From: TxFrom<Env>,
+    To: TxTo<Env>,
+    Gas: TxGas<Env>,
+{
+    /// Creates or updates a token policy, increments its version, and syncs it 
+    /// to the native mirror. 
+    ///  
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if the token identifier is invalid or the input lists exceed the 
+    /// configured maximum sizes. 
     pub fn set_token_policy<
         Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
         Arg1: ProxyArg<bool>,
@@ -93,7 +110,7 @@ where
         metadata_protection_enabled: Arg4,
         allowed_investor_classes: Arg5,
         allowed_jurisdictions: Arg6,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("setTokenPolicy")
@@ -107,47 +124,17 @@ where
             .original_result()
     }
 
-    pub fn set_governance<
-        Arg0: ProxyArg<ManagedAddress<Env::Api>>,
-    >(
-        self,
-        governance: Arg0,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
-        self.wrapped_tx
-            .payment(NotPayable)
-            .raw_call("setGovernance")
-            .argument(&governance)
-            .original_result()
-    }
-
-    pub fn accept_governance(
-        self,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
-        self.wrapped_tx
-            .payment(NotPayable)
-            .raw_call("acceptGovernance")
-            .original_result()
-    }
-
-    pub fn token_policy<
-        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
-    >(
-        self,
-        token_id: Arg0,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaTokenPolicy<Env::Api>> {
-        self.wrapped_tx
-            .payment(NotPayable)
-            .raw_call("getTokenPolicy")
-            .argument(&token_id)
-            .original_result()
-    }
-
+    /// Deactivates an existing token policy by setting `drwa_enabled = false`, 
+    /// incrementing its version, and syncing the update to the native mirror. 
+    ///  
+    /// Access is limited to the governance address or the contract owner. 
+    /// Reverts if the token policy does not exist. 
     pub fn deactivate_token_policy<
         Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
     >(
         self,
         token_id: Arg0,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, DrwaSyncEnvelope<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("deactivateTokenPolicy")
@@ -155,15 +142,22 @@ where
             .original_result()
     }
 
-    pub fn revoke_governance(
+    /// Maps a token identifier to its full compliance policy. 
+    pub fn token_policy<
+        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
+    >(
         self,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
+        token_id: Arg0,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaTokenPolicy<Env::Api>> {
         self.wrapped_tx
             .payment(NotPayable)
-            .raw_call("revokeGovernance")
+            .raw_call("getTokenPolicy")
+            .argument(&token_id)
             .original_result()
     }
 
+    /// Monotonically increasing version counter per token, used for staleness 
+    /// detection. 
     pub fn token_policy_version<
         Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
     >(
@@ -177,6 +171,123 @@ where
             .original_result()
     }
 
+    /// Sets the IPFS CID of the MiCA white paper for a regulated token and 
+    /// syncs the updated policy to the native mirror. 
+    ///  
+    /// CID format: must start with "Qm" (CIDv0) or "bafy" (CIDv1) and be 
+    /// 46-64 bytes long. Access is limited to governance or owner. 
+    pub fn set_white_paper_cid<
+        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
+        Arg1: ProxyArg<ManagedBuffer<Env::Api>>,
+    >(
+        self,
+        token_id: Arg0,
+        cid: Arg1,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("setWhitePaperCid")
+            .argument(&token_id)
+            .argument(&cid)
+            .original_result()
+    }
+
+    /// Sets the MiCA registration status for a regulated token and syncs 
+    /// the update to the native mirror. 
+    ///  
+    /// Valid statuses: `draft`, `submitted`, `approved`, `rejected`, `withdrawn`. 
+    pub fn set_registration_status<
+        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
+        Arg1: ProxyArg<ManagedBuffer<Env::Api>>,
+    >(
+        self,
+        token_id: Arg0,
+        status: Arg1,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, drwa_common::DrwaSyncEnvelope<Env::Api>> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("setRegistrationStatus")
+            .argument(&token_id)
+            .argument(&status)
+            .original_result()
+    }
+
+    /// Returns the white paper CID for a token, or empty if not set. 
+    pub fn get_white_paper_cid<
+        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
+    >(
+        self,
+        token_id: Arg0,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedBuffer<Env::Api>> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("getWhitePaperCid")
+            .argument(&token_id)
+            .original_result()
+    }
+
+    /// Returns the registration status for a token, or empty if not set. 
+    pub fn get_registration_status<
+        Arg0: ProxyArg<ManagedBuffer<Env::Api>>,
+    >(
+        self,
+        token_id: Arg0,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedBuffer<Env::Api>> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("getRegistrationStatus")
+            .argument(&token_id)
+            .original_result()
+    }
+
+    /// Storage layout version for forward-compatible upgrades. 
+    pub fn storage_version(
+        self,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, u32> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("getStorageVersion")
+            .original_result()
+    }
+
+    /// Proposes a new governance address and starts the acceptance window. 
+    pub fn set_governance<
+        Arg0: ProxyArg<ManagedAddress<Env::Api>>,
+    >(
+        self,
+        governance: Arg0,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("setGovernance")
+            .argument(&governance)
+            .original_result()
+    }
+
+    /// Accepts a pending governance transfer before the acceptance window 
+    /// expires. 
+    pub fn accept_governance(
+        self,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("acceptGovernance")
+            .original_result()
+    }
+
+    /// Revokes the current governance address, clearing all governance and 
+    /// pending governance state. Once governance is configured, only that 
+    /// governance address may call this endpoint. 
+    pub fn revoke_governance(
+        self,
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ()> {
+        self.wrapped_tx
+            .payment(NotPayable)
+            .raw_call("revokeGovernance")
+            .original_result()
+    }
+
+    /// The active governance address authorized to manage compliance state. 
     pub fn governance(
         self,
     ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedAddress<Env::Api>> {
@@ -186,9 +297,10 @@ where
             .original_result()
     }
 
-    pub fn pending_governance(
+    /// The proposed governance address awaiting acceptance. 
+    pub fn get_pending_governance(
         self,
-    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, ManagedAddress<Env::Api>> {
+    ) -> TxTypedCall<Env, From, To, NotPayable, Gas, Option<ManagedAddress<Env::Api>>> {
         self.wrapped_tx
             .payment(NotPayable)
             .raw_call("getPendingGovernance")

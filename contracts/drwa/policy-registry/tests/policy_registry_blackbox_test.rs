@@ -254,14 +254,14 @@ fn policy_registry_blackbox_governance_handoff() {
         .run();
 
     // Verify pending governance is set
-    let pending: ManagedAddress<StaticApi> = world
+    let pending: Option<ManagedAddress<StaticApi>> = world
         .query()
         .to(SC_ADDRESS)
         .typed(DrwaPolicyRegistryProxy)
-        .pending_governance()
+        .get_pending_governance()
         .returns(ReturnsResult)
         .run();
-    assert_eq!(pending, NEW_GOVERNANCE.to_managed_address());
+    assert_eq!(pending, Some(NEW_GOVERNANCE.to_managed_address()));
 
     // Active governance should still be the original
     let active: ManagedAddress<StaticApi> = world

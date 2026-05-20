@@ -33,7 +33,9 @@
             "tx": {
                 "from": "address:owner",
                 "contractCode": "mxsc:../../policy-registry/output/drwa-policy-registry.mxsc.json",
-                "arguments": ["address:owner"],
+                "arguments": [
+                    "address:owner"
+                ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
             },
@@ -50,7 +52,9 @@
             "tx": {
                 "from": "address:owner",
                 "contractCode": "mxsc:../output/drwa-asset-manager.mxsc.json",
-                "arguments": ["address:owner"],
+                "arguments": [
+                    "address:owner"
+                ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
             },
@@ -68,7 +72,9 @@
                 "from": "address:owner",
                 "to": "sc:drwa_asset_manager",
                 "function": "setPolicyRegistryAddress",
-                "arguments": ["sc:drwa_policy_registry"],
+                "arguments": [
+                    "sc:drwa_policy_registry"
+                ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
             },
@@ -92,8 +98,12 @@
                     "false",
                     "false",
                     "false",
-                    "nested:str:ACCREDITED",
-                    "nested:str:SG"
+                    [
+                        "nested:str:ACCREDITED"
+                    ],
+                    [
+                        "nested:str:SG"
+                    ]
                 ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"
@@ -284,10 +294,14 @@
             "tx": {
                 "to": "sc:drwa_asset_manager",
                 "function": "getAsset",
-                "arguments": ["str:CARBON-ab12cd"]
+                "arguments": [
+                    "str:CARBON-ab12cd"
+                ]
             },
             "expect": {
-                "out": ["*"],
+                "out": [
+                    "*"
+                ],
                 "status": "0"
             }
         },

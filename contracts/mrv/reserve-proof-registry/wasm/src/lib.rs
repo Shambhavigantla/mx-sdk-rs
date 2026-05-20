@@ -40,7 +40,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         setGovernance => set_governance
         acceptGovernance => accept_governance
         getGovernance => governance
-        getPendingGovernance => pending_governance
+        getPendingGovernance => get_pending_governance
         revokeGovernance => revoke_governance
     )
 }

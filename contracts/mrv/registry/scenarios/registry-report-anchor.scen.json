@@ -33,7 +33,7 @@
             "id": "deploy",
             "tx": {
                 "from": "address:owner",
-                "contractCode": "mxsc:output/mrv-registry.mxsc.json",
+                "contractCode": "mxsc:../output/mrv-registry.mxsc.json",
                 "arguments": [
                     "address:governance"
                 ],
@@ -50,7 +50,7 @@
             "id": "anchor-report-v2",
             "comment": "Anchor a V2 report with evidence manifest",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "anchorReportV2",
                 "arguments": [
@@ -79,7 +79,7 @@
             "id": "anchor-duplicate-season-fails",
             "comment": "Re-anchoring the same season should fail (use amendReportV2 instead)",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "anchorReportV2",
                 "arguments": [
@@ -109,7 +109,7 @@
             "id": "anchor-empty-report-hash-fails",
             "comment": "Empty report hash must be rejected",
             "tx": {
-                "from": "address:owner",
+                "from": "address:governance",
                 "to": "sc:registry",
                 "function": "anchorReportV2",
                 "arguments": [

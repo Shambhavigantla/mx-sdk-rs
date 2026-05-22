@@ -10,11 +10,11 @@ const GOVERNANCE: TestAddress = TestAddress::new("governance");
 const ISSUER: TestAddress = TestAddress::new("issuer");
 const INTRUDER: TestAddress = TestAddress::new("intruder");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("drwa-identity-registry");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/drwa-identity-registry.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("identity-registry/output/drwa-identity-registry.mxsc.json");
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
-    world.set_current_dir_from_workspace("contracts/drwa/identity-registry");
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
+    world.set_current_dir_from_workspace("contracts/drwa");
     world.register_contract(CODE_PATH, drwa_identity_registry::ContractBuilder);
     world
 }

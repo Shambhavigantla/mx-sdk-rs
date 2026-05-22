@@ -16,19 +16,19 @@ const RESERVE_SC: TestSCAddress = TestSCAddress::new("mrv-reserve-proof");
 const GOVERNANCE_SC: TestSCAddress = TestSCAddress::new("mrv-governance");
 
 const CARBON_CODE: MxscPath =
-    MxscPath::new("mxsc:../../carbon-credit/output/mrv-carbon-credit.mxsc.json");
+    MxscPath::new("../../carbon-credit/output/mrv-carbon-credit.mxsc.json");
 const BUFFER_CODE: MxscPath =
-    MxscPath::new("mxsc:../../buffer-pool/output/mrv-buffer-pool.mxsc.json");
-const RESERVE_CODE: MxscPath = MxscPath::new("mxsc:output/mrv-reserve-proof-registry.mxsc.json");
+    MxscPath::new("../../buffer-pool/output/mrv-buffer-pool.mxsc.json");
+const RESERVE_CODE: MxscPath = MxscPath::new("output/mrv-reserve-proof-registry.mxsc.json");
 const GOVERNANCE_CODE: MxscPath =
-    MxscPath::new("mxsc:../../governance/output/mrv-governance.mxsc.json");
+    MxscPath::new("../../governance/output/mrv-governance.mxsc.json");
 
 const DVCU_TOKEN: TestTokenIdentifier = TestTokenIdentifier::new("DVCU-123456");
 const DGSC_TOKEN: TestTokenIdentifier = TestTokenIdentifier::new("DGSC-123456");
 const BUFFER_TOKEN: TestTokenIdentifier = TestTokenIdentifier::new("DVCUBUF-123456");
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     world.set_current_dir_from_workspace("contracts/mrv/reserve-proof-registry");
     world.register_contract(CARBON_CODE, mrv_carbon_credit::ContractBuilder);
     world.register_contract(BUFFER_CODE, mrv_buffer_pool::ContractBuilder);

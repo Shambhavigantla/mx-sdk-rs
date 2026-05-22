@@ -35,13 +35,13 @@ const ASSET_SC: TestSCAddress = TestSCAddress::new("drwa-asset-manager");
 const ATTESTATION_SC: TestSCAddress = TestSCAddress::new("drwa-attestation");
 
 const POLICY_CODE: MxscPath =
-    MxscPath::new("mxsc:../../policy-registry/output/drwa-policy-registry.mxsc.json");
+    MxscPath::new("policy-registry/output/drwa-policy-registry.mxsc.json");
 const IDENTITY_CODE: MxscPath =
-    MxscPath::new("mxsc:../../identity-registry/output/drwa-identity-registry.mxsc.json");
+    MxscPath::new("identity-registry/output/drwa-identity-registry.mxsc.json");
 const ASSET_CODE: MxscPath =
-    MxscPath::new("mxsc:../../asset-manager/output/drwa-asset-manager.mxsc.json");
+    MxscPath::new("asset-manager/output/drwa-asset-manager.mxsc.json");
 const ATTESTATION_CODE: MxscPath =
-    MxscPath::new("mxsc:../../attestation/output/drwa-attestation.mxsc.json");
+    MxscPath::new("attestation/output/drwa-attestation.mxsc.json");
 
 const TOKEN_ID: &[u8] = b"CARBON-ab12cd";
 const POLICY_ID: &[u8] = TOKEN_ID;
@@ -49,8 +49,8 @@ const POLICY_ID: &[u8] = TOKEN_ID;
 // ── World setup ────────────────────────────────────────────────────────
 
 fn world() -> ScenarioWorld {
-    let mut w = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
-    w.set_current_dir_from_workspace("contracts/drwa/common");
+    let mut w = ScenarioWorld::new().executor_config(ExecutorConfig::default());
+    w.set_current_dir_from_workspace("contracts/drwa");
     w.register_contract(POLICY_CODE, drwa_policy_registry::ContractBuilder);
     w.register_contract(IDENTITY_CODE, drwa_identity_registry::ContractBuilder);
     w.register_contract(ASSET_CODE, drwa_asset_manager::ContractBuilder);

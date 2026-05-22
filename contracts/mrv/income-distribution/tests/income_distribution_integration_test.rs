@@ -17,7 +17,7 @@ const OWNER: TestAddress = TestAddress::new("owner");
 const GOVERNANCE: TestAddress = TestAddress::new("governance");
 const HOLDER_A: TestAddress = TestAddress::new("holder_a");
 const INCOME_SC: TestSCAddress = TestSCAddress::new("mrv-income-distribution");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-income-distribution.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-income-distribution.mxsc.json");
 const COME_TOKEN: TestTokenIdentifier = TestTokenIdentifier::new("COME-abcdef");
 
 fn world() -> ScenarioWorld {

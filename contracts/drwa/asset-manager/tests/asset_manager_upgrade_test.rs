@@ -15,7 +15,7 @@ const POLICY_CODE_PATH: MxscPath =
 const TOKEN_ID: &[u8] = b"HOTEL-ab12cd";
 
 fn world() -> ScenarioWorld {
-    let mut blockchain = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut blockchain = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     blockchain.set_current_dir_from_workspace("contracts/drwa");
     blockchain.register_contract(CODE_PATH, drwa_asset_manager::ContractBuilder);
     blockchain.register_contract(POLICY_CODE_PATH, drwa_policy_registry::ContractBuilder);

@@ -10,9 +10,9 @@ const SIGNER_ONE: TestAddress = TestAddress::new("signer-one");
 const SIGNER_TWO: TestAddress = TestAddress::new("signer-two");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("mrv-atomic-swap");
 const GOVERNANCE_SC: TestSCAddress = TestSCAddress::new("mrv-governance");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-atomic-swap.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-atomic-swap.mxsc.json");
 const GOVERNANCE_CODE: MxscPath =
-    MxscPath::new("mxsc:../../governance/output/mrv-governance.mxsc.json");
+    MxscPath::new("../../governance/output/mrv-governance.mxsc.json");
 
 macro_rules! allow_dvcu_token {
     ($sc:expr) => {
@@ -21,7 +21,7 @@ macro_rules! allow_dvcu_token {
 }
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     world.set_current_dir_from_workspace("contracts/mrv/atomic-swap");
     world.register_contract(CODE_PATH, mrv_atomic_swap::ContractBuilder);
     world.register_contract(GOVERNANCE_CODE, mrv_governance::ContractBuilder);

@@ -4,7 +4,7 @@ const OWNER: TestAddress = TestAddress::new("owner");
 const GOVERNANCE: TestAddress = TestAddress::new("governance");
 const VERIFIER: TestAddress = TestAddress::new("verifier");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("gsoc-registry");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-gsoc-registry.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-gsoc-registry.mxsc.json");
 
 fn world() -> ScenarioWorld {
     let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());

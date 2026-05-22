@@ -4,11 +4,11 @@ use multiversx_sc_scenario::imports::*;
 
 const OWNER: TestAddress = TestAddress::new("owner");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("drwa-common-test-harness");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/drwa-common-test-harness.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("common/test-harness/output/drwa-common-test-harness.mxsc.json");
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
-    world.set_current_dir_from_workspace("contracts/drwa/common/test-harness");
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
+    world.set_current_dir_from_workspace("contracts/drwa");
     world.register_contract(CODE_PATH, drwa_common_test_harness::ContractBuilder);
     world
 }
@@ -115,7 +115,7 @@ fn token_id_rejects_too_short() {
         .tx()
         .from(OWNER)
         .to(SC_ADDRESS)
-        .returns(ExpectError(4u64, "token_id is too short"))
+        .returns(ExpectError(4u64, "DRWA_INVALID_TOKEN_ID: is too short"))
         .whitebox(drwa_common_test_harness::contract_obj, |sc| {
             sc.validate_token_id(ManagedBuffer::from(b"AB-1234"));
         });

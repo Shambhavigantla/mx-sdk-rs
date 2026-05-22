@@ -25,6 +25,13 @@
                     "creatorNonce": "1",
                     "newAddress": "sc:drwa_asset_manager"
                 }
+            ],
+            "authorizedDRWASyncCallers": [
+                "sc:drwa_policy_registry",
+                "sc:drwa_asset_manager",
+                "sc:drwa_identity_registry",
+                "sc:drwa_attestation",
+                "sc:drwa_auth_admin"
             ]
         },
         {
@@ -98,12 +105,8 @@
                     "false",
                     "false",
                     "false",
-                    [
-                        "nested:str:ACCREDITED"
-                    ],
-                    [
+                        "nested:str:ACCREDITED",
                         "nested:str:SG"
-                    ]
                 ],
                 "gasLimit": "50,000,000",
                 "gasPrice": "0"

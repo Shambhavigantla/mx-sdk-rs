@@ -6,7 +6,7 @@ use multiversx_sc_scenario::imports::*;
 const OWNER: TestAddress = TestAddress::new("owner");
 const GOVERNANCE: TestAddress = TestAddress::new("governance");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("mrv-registry");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-registry.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-registry.mxsc.json");
 const METHODOLOGY_ID: &[u8] = b"INT-AG-SOC-001";
 const METHODOLOGY_VERSION: &[u8] = b"1.0.0";
 const METHODOLOGY_DIGEST: &[u8] = b"sha256:ag-methodology-pack-001";
@@ -16,7 +16,7 @@ const VERIFICATION_CASE_ID: &[u8] = b"verification-public-010";
 const LOT_ID: &[u8] = b"lot-public-010";
 
 fn world() -> ScenarioWorld {
-    let mut blockchain = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut blockchain = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     blockchain.set_current_dir_from_workspace("contracts/mrv/registry");
     blockchain.register_contract(CODE_PATH, mrv_registry::ContractBuilder);
     blockchain

@@ -9,15 +9,15 @@ const GOVERNANCE: TestAddress = TestAddress::new("governance");
 const CARBON_CREDIT: TestAddress = TestAddress::new("carbon-credit");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("mrv-buffer-pool");
 const GOVERNANCE_SC: TestSCAddress = TestSCAddress::new("mrv-governance");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-buffer-pool.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-buffer-pool.mxsc.json");
 const GOVERNANCE_CODE: MxscPath =
-    MxscPath::new("mxsc:../../governance/output/mrv-governance.mxsc.json");
+    MxscPath::new("../../governance/output/mrv-governance.mxsc.json");
 const BUFFER_TOKEN: TestTokenIdentifier = TestTokenIdentifier::new("DVCUBUF-123456");
 const SIGNER_ONE: TestAddress = TestAddress::new("signer-one");
 const SIGNER_TWO: TestAddress = TestAddress::new("signer-two");
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     world.set_current_dir_from_workspace("contracts/mrv/buffer-pool");
     world.register_contract(CODE_PATH, mrv_buffer_pool::ContractBuilder);
     world.register_contract(GOVERNANCE_CODE, mrv_governance::ContractBuilder);

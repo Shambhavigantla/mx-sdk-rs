@@ -7,10 +7,10 @@ const SIGNER_ONE: TestAddress = TestAddress::new("signer-one");
 const SIGNER_TWO: TestAddress = TestAddress::new("signer-two");
 const VERIFIER: TestAddress = TestAddress::new("verifier");
 const SC_ADDRESS: TestSCAddress = TestSCAddress::new("mrv-governance");
-const CODE_PATH: MxscPath = MxscPath::new("mxsc:output/mrv-governance.mxsc.json");
+const CODE_PATH: MxscPath = MxscPath::new("output/mrv-governance.mxsc.json");
 
 fn world() -> ScenarioWorld {
-    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::full_suite());
+    let mut world = ScenarioWorld::new().executor_config(ExecutorConfig::default());
     world.set_current_dir_from_workspace("contracts/mrv/governance");
     world.register_contract(CODE_PATH, mrv_governance::ContractBuilder);
     world

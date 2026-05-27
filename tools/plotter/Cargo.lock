@@ -791,7 +791,7 @@ dependencies = [
 
 [[package]]
 name = "multiversx-chain-core"
-version = "0.22.0"
+version = "0.22.1"
 dependencies = [
  "bech32",
  "bitflags 2.11.0",
@@ -815,7 +815,7 @@ dependencies = [
 
 [[package]]
 name = "multiversx-chain-vm"
-version = "0.22.0"
+version = "0.22.1"
 dependencies = [
  "anyhow",
  "bitflags 2.11.0",
@@ -838,15 +838,14 @@ dependencies = [
 [[package]]
 name = "multiversx-chain-vm-executor"
 version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b72af69cd251075c0bc020ea72f0d2056ac0966fc17aced17b866a5324536e28"
+source = "git+https://github.com/Shanmugavardhan/mx-vm-executor-rs?rev=69167eb16e3ed3874e77b48df29daa9acb5c8b25#69167eb16e3ed3874e77b48df29daa9acb5c8b25"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "multiversx-sc"
-version = "0.65.0"
+version = "0.65.1"
 dependencies = [
  "bitflags 2.11.0",
  "generic-array 1.3.5",
@@ -881,7 +880,7 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-derive"
-version = "0.65.0"
+version = "0.65.1"
 dependencies = [
  "hex",
  "proc-macro2",
@@ -892,7 +891,7 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-meta-lib"
-version = "0.65.0"
+version = "0.65.1"
 dependencies = [
  "clap",
  "colored",
@@ -913,7 +912,7 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-scenario"
-version = "0.65.0"
+version = "0.65.1"
 dependencies = [
  "base64",
  "colored",
@@ -1732,3 +1731,8 @@ name = "zmij"
 version = "1.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"
+
+[[patch.unused]]
+name = "multiversx-chain-vm-executor-wasmer-experimental"
+version = "0.5.1"
+source = "git+https://github.com/Shanmugavardhan/mx-vm-executor-rs?rev=69167eb16e3ed3874e77b48df29daa9acb5c8b25#69167eb16e3ed3874e77b48df29daa9acb5c8b25"

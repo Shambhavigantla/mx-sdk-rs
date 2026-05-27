@@ -55,3 +55,7 @@ optional = true
 [dependencies.multiversx-bls]
 version = "0.2.0"
 optional = true
+
+multiversx-chain-vm-executor = { git = "https://github.com/Shanmugavardhan/mx-vm-executor-rs", rev = "69167eb16e3ed3874e77b48df29daa9acb5c8b25"}
+multiversx-chain-vm-executor-wasmer-experimental = { git = "https://github.com/Shanmugavardhan/mx-vm-executor-rs", rev = "69167eb16e3ed3874e77b48df29daa9acb5c8b25"}
+multiversx-chain-core = { git = "https://github.com/mangonui/mx-chain-core-go", rev = "cc9b460beb60ca3c5f91f5a3b1b3265844ff7832"}

@@ -66,3 +66,8 @@ path = "../scenario"
 version = "=0.15.1"
 path = "../../sdk/core"
 features = ["wallet-full"]
+
+[patch.crates-io]
+multiversx-chain-vm-executor = { git = "https://github.com/Shanmugavardhan/mx-vm-executor-rs", rev = "69167eb16e3ed3874e77b48df29daa9acb5c8b25"}
+multiversx-chain-vm-executor-wasmer-experimental = { git = "https://github.com/Shanmugavardhan/mx-vm-executor-rs", rev = "69167eb16e3ed3874e77b48df29daa9acb5c8b25"}
+multiversx-chain-vm = { git = "https://github.com/Shambhavigantla/mx-chain-vm-go", rev = "5d089c5667b87403152e22ec4bd1357f2214c50f"}

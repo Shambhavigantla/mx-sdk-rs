@@ -47,3 +47,6 @@ add-endpoints = [
     "get_block_timestamps",
     "get_esdt_token_data",
 ]
+
+[[proxy]]
+path = "interactor/src/basic_features_proxy.rs"

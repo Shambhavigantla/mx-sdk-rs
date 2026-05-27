@@ -4,6 +4,10 @@ use super::{
     ContractCreatorTarget, RepoSource, RepoVersion, TemplateAdjuster,
     template_source::{TemplateSource, template_sources},
 };
+use multiversx_sc_meta_lib::cargo_toml::CargoTomlContents;
+use pathdiff::diff_paths;
+use std::path::PathBuf;
+use toml::{Value as TomlValue, value::Table as TomlTable};
 
 /// Creates a new contract on disk, from a template, given a name.
 pub async fn create_contract(args: &TemplateArgs) {
@@ -77,7 +81,66 @@ impl<'a> ContractCreator<'a> {
         self.copy_template(args_tag.clone());
         self.update_dependencies(args_tag);
         self.rename_template();
+            self.inject_repo_patch_if_local();
     }
+
+        fn inject_repo_patch_if_local(&self) {
+            use super::RepoSource;
+
+            match self.repo_source {
+                RepoSource::LocalPath(repo_root) => {
+                    let cargo_toml_path = self.target.contract_dir().join("Cargo.toml");
+                    let mut toml = CargoTomlContents::load_from_file(&cargo_toml_path);
+
+                    // compute relative paths from generated contract dir to repo paths
+                    let gen_dir: PathBuf = self.target.contract_dir();
+                    let vendor_exec = repo_root.join("vendor").join("multiversx-chain-vm-executor");
+                    let vendor_wasmer = repo_root.join("vendor").join("multiversx-chain-vm-executor-wasmer-experimental");
+                    let chain_vm = repo_root.join("chain").join("vm");
+
+                    let rel_exec = diff_paths(&vendor_exec, &gen_dir)
+                        .unwrap_or(vendor_exec.clone())
+                        .to_string_lossy()
+                        .to_string();
+                    let rel_wasmer = diff_paths(&vendor_wasmer, &gen_dir)
+                        .unwrap_or(vendor_wasmer.clone())
+                        .to_string_lossy()
+                        .to_string();
+                    let rel_chain_vm = diff_paths(&chain_vm, &gen_dir)
+                        .unwrap_or(chain_vm.clone())
+                        .to_string_lossy()
+                        .to_string();
+
+                    // build toml structure: [patch.crates-io]
+                    let mut crates_io: TomlTable = TomlTable::new();
+
+                    let mut exec_entry: TomlTable = TomlTable::new();
+                    exec_entry.insert("path".to_string(), TomlValue::String(rel_exec));
+                    crates_io.insert(
+                        "multiversx-chain-vm-executor".to_string(),
+                        TomlValue::Table(exec_entry),
+                    );
+
+                    let mut wasmer_entry: TomlTable = TomlTable::new();
+                    wasmer_entry.insert("path".to_string(), TomlValue::String(rel_wasmer));
+                    crates_io.insert(
+                        "multiversx-chain-vm-executor-wasmer-experimental".to_string(),
+                        TomlValue::Table(wasmer_entry),
+                    );
+
+                    let mut chain_entry: TomlTable = TomlTable::new();
+                    chain_entry.insert("path".to_string(), TomlValue::String(rel_chain_vm));
+                    crates_io.insert("multiversx-chain-vm".to_string(), TomlValue::Table(chain_entry));
+
+                    let mut patch_tbl: TomlTable = TomlTable::new();
+                    patch_tbl.insert("crates-io".to_string(), TomlValue::Table(crates_io));
+
+                    toml.toml_value.insert("patch".to_string(), TomlValue::Table(patch_tbl));
+                    toml.save_to_file(&cargo_toml_path);
+                }
+                _ => {}
+            }
+        }
 
     pub fn copy_template(&self, args_tag: FrameworkVersion) {
         self.template_source
